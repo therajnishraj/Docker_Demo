@@ -1,5 +1,6 @@
-# Use Maven with OpenJDK 17 as the base image for building
-FROM maven:3.8.6-openjdk-17-slim AS build
+# Stage 1: Build the application with Maven and OpenJDK 17
+FROM maven:3.9.7-eclipse-temurin-17 AS build
+
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -11,8 +12,9 @@ COPY src/ ./src/
 # Build the project (this will generate the target directory with the JAR file)
 RUN mvn clean install
 
-# Use OpenJDK 17 as the base image for the runtime
-FROM openjdk:17
+
+# Stage 2: Run the application using OpenJDK 17
+FROM eclipse-temurin:17-jdk
 
 # Set the working directory inside the container
 WORKDIR /app
