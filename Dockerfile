@@ -1,8 +1,5 @@
-# Use OpenJDK as the base image
-FROM openjdk:17 AS build
-
-# Install Maven (to run Maven build inside the container)
-RUN apt-get update && apt-get install -y maven
+# Use Maven with OpenJDK 17 as the base image for building
+FROM maven:3.8.6-openjdk-17-slim AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,7 +11,7 @@ COPY src/ ./src/
 # Build the project (this will generate the target directory with the JAR file)
 RUN mvn clean install
 
-# Now, create the runtime container
+# Use OpenJDK 17 as the base image for the runtime
 FROM openjdk:17
 
 # Set the working directory inside the container
